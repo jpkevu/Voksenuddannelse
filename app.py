@@ -12,8 +12,8 @@ st.set_page_config(
 def load_data():
 
     response = requests.get(
-        "https://www.google.com",
-        timeout=10
+        "https://voksenuddannelse.dk",
+        timeout=30
     )
 
     st.write(response.status_code)
@@ -22,7 +22,6 @@ def load_data():
         "holdTitle": ["Test"],
         "institution": ["EVU"]
     })
-
 
 st.title("Brancherettede asbestkurser for el- og vvs-branchen")
 
