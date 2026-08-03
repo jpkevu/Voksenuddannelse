@@ -31,6 +31,8 @@ def load_data():
             "pageCount": str(page)
         }
 
+        st.write(f"Henter side {page}...")
+
         response = requests.get(
             url,
             params=params,
