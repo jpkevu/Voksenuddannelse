@@ -8,145 +8,20 @@ st.set_page_config(
 )
 
 
-@st.cache_data(ttl=300)
+# @st.cache_data(ttl=300)
 def load_data():
-    subject_code = "22906"
 
-    url = "https://voksenuddannelse.dk/soeg-api/api/search/hold/searchHold"
+    response = requests.get(
+        "https://www.google.com",
+        timeout=10
+    )
 
-    headers = {
-        "User-Agent": "Mozilla/5.0",
-        "Accept": "application/json, text/plain, */*",
-        "Referer": "https://voksenuddannelse.dk/"
-    }
+    st.write(response.status_code)
 
-    all_rows = []
-    page = 1
-
-    while True:
-        params = {
-            "subject_code": subject_code,
-            "level": "-",
-            "type": "AMU",
-            "pageCount": str(page)
-        }
-
-        st.write(f"Før request.get")
-
-        response = requests.get(
-            url,
-            params=params,
-            headers=headers,
-            timeout=120
-        )
-
-        st.write(f"Efter request.get")
-
-        response.raise_for_status()
-
-        data = response.json()
-
-        rows = data.get("holdCardDtos", [])
-
-        if not rows:
-            break
-
-        all_rows.extend(rows)
-
-        page += 1
-
-        if page > 100:
-            break
-
-    df = pd.DataFrame(all_rows)
-
-    if df.empty:
-        return df
-
-    today = pd.Timestamp.today().normalize()
-
-    text_columns = [
-        "beskrivelse",
-        "institution",
-        "lokationSted",
-        "holdTitle",
-        "kviknummer"
-    ]
-
-    for col in text_columns:
-        if col in df.columns:
-            df[col] = df[col].fillna("")
-
-    if "startDate" in df.columns:
-        df["startDate"] = pd.to_datetime(
-            df["startDate"],
-            errors="coerce"
-        )
-
-        df = df[
-            df["startDate"] >= today
-        ]
-
-    if "endDate" in df.columns:
-        df["endDate"] = pd.to_datetime(
-            df["endDate"],
-            errors="coerce"
-        )
-
-    if "tilmeldingsFrist" in df.columns:
-        df["tilmeldingsFrist"] = pd.to_datetime(
-            df["tilmeldingsFrist"],
-            errors="coerce"
-        )
-
-        df = df[
-            df["tilmeldingsFrist"] >= today
-        ]
-
-    if "currentParticipantAmount" in df.columns:
-        df["currentParticipantAmount"] = pd.to_numeric(
-            df["currentParticipantAmount"],
-            errors="coerce"
-        ).fillna(0)
-
-    if "participantCapacity" in df.columns:
-        df["participantCapacity"] = pd.to_numeric(
-            df["participantCapacity"],
-            errors="coerce"
-        ).fillna(0)
-
-    if (
-        "currentParticipantAmount" in df.columns
-        and "participantCapacity" in df.columns
-    ):
-        df["ledigePladser"] = (
-            df["participantCapacity"]
-            - df["currentParticipantAmount"]
-        )
-
-        df = df[
-            df["ledigePladser"] > 0
-        ]
-
-    if "aflyst" in df.columns:
-        df = df[
-            df["aflyst"] == False
-        ]
-
-    if "kviknummer" in df.columns:
-        df["link"] = (
-            "https://voksenuddannelse.dk/soeg/uddannelser/amu/filtrering/kurs"
-            + "?subject_code=22906"
-            + "&level=-"
-            + "&type=amu"
-            + "&kviknummer="
-            + df["kviknummer"].astype(str)
-        )
-
-    if "startDate" in df.columns:
-        df = df.sort_values("startDate")
-
-    return df
+    return pd.DataFrame({
+        "holdTitle": ["Test"],
+        "institution": ["EVU"]
+    })
 
 
 st.title("Brancherettede asbestkurser for el- og vvs-branchen")
