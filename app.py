@@ -35,7 +35,7 @@ def load_data():
             url,
             params=params,
             headers=headers,
-            timeout=30
+            timeout=120
         )
 
         response.raise_for_status()
