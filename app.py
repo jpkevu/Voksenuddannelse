@@ -11,12 +11,17 @@ st.set_page_config(
 # @st.cache_data(ttl=300)
 def load_data():
 
-    response = requests.get(
-        "https://voksenuddannelse.dk",
-        timeout=30
-    )
+    try:
+        response = requests.get(
+            "https://voksenuddannelse.dk",
+            timeout=10
+        )
 
-    st.write(response.status_code)
+        st.write("Status:", response.status_code)
+
+    except Exception as e:
+        st.write("FEJL:")
+        st.exception(e)
 
     return pd.DataFrame({
         "holdTitle": ["Test"],
