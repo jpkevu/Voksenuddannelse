@@ -10,6 +10,7 @@ st.set_page_config(
 
 @st.cache_data(ttl=300)
 def load_data():
+    st.write(f"Henter data fra voksenuddannelse.dk...")
     subject_code = "22906"
 
     url = "https://voksenuddannelse.dk/soeg-api/api/search/hold/searchHold"
@@ -31,7 +32,7 @@ def load_data():
             "pageCount": str(page)
         }
 
-        st.write(f"Henter side {page}...")
+        st.write(f"Før request.get")
 
         response = requests.get(
             url,
@@ -39,6 +40,8 @@ def load_data():
             headers=headers,
             timeout=120
         )
+
+        st.write(f"Efter request.get")
 
         response.raise_for_status()
 
