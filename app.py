@@ -10,7 +10,6 @@ st.set_page_config(
 
 @st.cache_data(ttl=300)
 def load_data():
-    st.write(f"Henter data fra voksenuddannelse.dk...")
     subject_code = "22906"
 
     url = "https://voksenuddannelse.dk/soeg-api/api/search/hold/searchHold"
