@@ -127,9 +127,9 @@ def fetch_data():
             - df["currentParticipantAmount"]
         )
 
-        df = df[
-            df["ledigePladser"] > 0
-        ]
+        # df = df[
+        #     df["ledigePladser"] > 0
+        # ]
 
     if "aflyst" in df.columns:
         df = df[
