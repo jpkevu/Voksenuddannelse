@@ -69,20 +69,6 @@ def load_data():
     if "startDate" in df.columns:
         df = df.sort_values("startDate")
 
-    target_text = (
-    "Brancherettet asbestkursus for el- og vvs-branchen med fokus på "
-    "typiske arbejdsopgaver og situationer fra installationsområdet."
-    )
-
-    if "beskrivelse" in df.columns:
-        df = df[
-            df["beskrivelse"].str.contains(
-                target_text,
-                case=False,
-                na=False
-            )
-        ]
-
     return df
 
 

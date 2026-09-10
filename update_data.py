@@ -146,6 +146,19 @@ def fetch_data():
             + df["kviknummer"].astype(str)
         )
 
+    target_text = (
+    "Brancherettet asbestkursus for el- og vvs-branchen"
+    )
+
+    if "beskrivelse" in df.columns:
+        df = df[
+            df["beskrivelse"].str.contains(
+                target_text,
+                case=False,
+                na=False
+            )
+        ]
+
     if "startDate" in df.columns:
         df = df.sort_values("startDate")
 
