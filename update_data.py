@@ -168,6 +168,35 @@ def fetch_data():
         encoding="utf-8-sig"
     )
 
+    # Git commit and push changes
+    import subprocess
+
+    try:
+        subprocess.run(["git", "add", "amu22906.csv"], check=True)
+
+        status = subprocess.run(
+            ["git", "diff", "--cached", "--quiet"]
+            )
+
+        if status.returncode != 0:
+            subprocess.run(
+                ["git", "commit", "-m", "Automatisk opdatering af amu22906.csv"],
+                check=True
+            )
+
+            subprocess.run(
+                ["git", "push"], 
+                check=True
+            )
+
+            print("Data pushed til GitHub.")
+
+        else:
+            print("Ingen ændringer at pushe til GitHub.")
+
+    except Exception as e:
+        print(f"Fejl under Git-kommandoer: {e}")
+
     print(f"Gemte {len(df)} hold i amu22906.csv")
 
 
