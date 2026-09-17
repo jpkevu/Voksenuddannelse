@@ -1,6 +1,9 @@
 import pandas as pd
 import requests
+import os
+from pathlib import Path
 
+os.chdir(Path(__file__).parent)
 
 def fetch_data():
     subject_code = "22906"
