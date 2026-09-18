@@ -1,14 +1,20 @@
 import streamlit as st
 import pandas as pd
 from pathlib import Path
+from PIL import Image
 
 
 # ---------------------------------------------------------
 # SIDEOPSÆTNING
 # ---------------------------------------------------------
 
+icon = Image.open(
+    Path("images/Gr├©n mand 3.png")
+)
+
 st.set_page_config(
     page_title="Brancherettede asbestkurser for el- og vvs-branchen",
+    page_icon=icon,
     layout="wide"
 )
 
